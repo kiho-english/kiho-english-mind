@@ -283,15 +283,13 @@ document.getElementById("applicationForm").addEventListener("submit", async func
 const form = document.getElementById("applicationForm");
 const complete = document.getElementById("completeScreen");
 
-form.style.display = "none";
-complete.style.display = "block";
-complete.scrollIntoView({ behavior: "smooth", block: "start" });
+form.style.setProperty("display", "none", "important");
+complete.style.setProperty("display", "block", "important");
 
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
-
+window.scrollTo({
+  top: 0,
+  behavior: "smooth"
+});
   } catch (error) {
     console.error(error);
 
