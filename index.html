@@ -279,47 +279,6 @@ alert(
 
 // フォームを非表示
 document.getElementById("applicationForm").style.display = "none";
-
-// 完了画面をJavaScriptで作成
-const complete = document.createElement("div");
-
-complete.id = "completeScreen";
-
-complete.style.cssText = `
-  display:block;
-  text-align:center;
-  padding:50px 20px;
-  background:#ffffff;
-  border-radius:12px;
-`;
-
-complete.innerHTML = `
-  <div style="font-size:56px;color:#4CAF50;">✓</div>
-
-  <h2>お申し込みが完了しました！</h2>
-
-  <p style="line-height:2;">
-    kiho english mindの体験レッスンに<br>
-    お申し込みいただき、ありがとうございます。
-  </p>
-
-  <p style="line-height:2;">
-    お申し込み内容を確認後、<br>
-    担当者より日程についてご連絡いたします。
-  </p>
-
-  <p style="margin-top:30px;font-size:14px;color:#777;">
-    受付確認メールをご確認ください。
-  </p>
-
-  <p style="margin-top:35px;font-weight:bold;">
-    kiho english mind
-  </p>
-`;
-
-document.querySelector(".container").appendChild(complete);
-
-window.scrollTo(0, 0);
     alert("お申し込みが完了しました！");
 window.scrollTo({
   top: 0,
