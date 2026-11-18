@@ -280,11 +280,12 @@ document.getElementById("applicationForm").addEventListener("submit", async func
       }
     );
 
-    // フォームを非表示にする
-    document.getElementById("applicationForm").style.display = "none";
+const form = document.getElementById("applicationForm");
+const complete = document.getElementById("completeScreen");
 
-    // 完了画面を表示する
-    document.getElementById("completeScreen").style.display = "block";
+form.style.display = "none";
+complete.style.display = "block";
+complete.scrollIntoView({ behavior: "smooth", block: "start" });
 
     window.scrollTo({
       top: 0,
