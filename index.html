@@ -167,8 +167,13 @@
   initializeLiff();
 
   
+
+let isSubmitting = false;
+
 document.getElementById("applicationForm").addEventListener("submit", async function(e) {
   e.preventDefault();
+
+  if (isSubmitting) return;
 
   const availability = Array.from(
     document.querySelectorAll('#availabilityChoices input:checked')
@@ -191,6 +196,13 @@ document.getElementById("applicationForm").addEventListener("submit", async func
     return;
   }
 
+  const levelElement = document.querySelector('input[name="englishLevel"]:checked');
+
+  if (!levelElement) {
+    alert("英語レベルを選択してください。");
+    return;
+  }
+
   const data = {
     lineName,
     lineUserId,
@@ -198,7 +210,7 @@ document.getElementById("applicationForm").addEventListener("submit", async func
     furigana: document.getElementById("furigana").value.trim(),
     phone: document.getElementById("phone").value.trim(),
     email: document.getElementById("email").value.trim(),
-    englishLevel: document.querySelector('input[name="englishLevel"]:checked').value,
+    englishLevel: levelElement.value,
     reason: document.getElementById("reason").value.trim(),
     topics: document.getElementById("topics").value.trim(),
     questions: document.getElementById("questions").value.trim(),
@@ -209,8 +221,10 @@ document.getElementById("applicationForm").addEventListener("submit", async func
   const button = document.getElementById("submitButton");
   const status = document.getElementById("status");
 
+  isSubmitting = true;
   button.disabled = true;
-  status.textContent = "送信しています...";
+  button.textContent = "送信しています...";
+  status.textContent = "お申し込みを送信しています。";
 
   try {
     await fetch(
@@ -225,16 +239,29 @@ document.getElementById("applicationForm").addEventListener("submit", async func
       }
     );
 
-    status.textContent =
-      "送信リクエストを送信しました。メールの到着をご確認ください。";
+    // フォームを非表示にする
+    document.getElementById("applicationForm").style.display = "none";
+
+    // 完了画面を表示する
+    document.getElementById("completeScreen").style.display = "block";
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
 
   } catch (error) {
     console.error(error);
-    status.textContent = "送信できませんでした。もう一度お試しください。";
-  } finally {
+
+    status.textContent =
+      "送信できませんでした。通信環境を確認して、もう一度お試しください。";
+
+    isSubmitting = false;
     button.disabled = false;
+    button.textContent = "申し込む";
   }
 });
+
 
 </script>
 
