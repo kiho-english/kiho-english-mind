@@ -1,1 +1,226 @@
 
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>kiho english mind｜体験レッスン申込</title>
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 20px 14px;
+      background: #f7f7f5;
+      color: #333;
+      font-family: sans-serif;
+    }
+    .container {
+      max-width: 560px;
+      margin: auto;
+      background: white;
+      padding: 25px 20px;
+      border-radius: 12px;
+    }
+    h1 { font-size: 23px; text-align: center; }
+    .subtitle { text-align: center; color: #777; font-size: 13px; }
+    h2 {
+      font-size: 17px;
+      margin-top: 30px;
+      border-bottom: 2px solid #d9c9a5;
+      padding-bottom: 8px;
+    }
+    label { display: block; margin: 17px 0 7px; font-size: 14px; }
+    .required { color: #c44; font-size: 12px; }
+    input[type="text"], input[type="email"], input[type="tel"],
+    textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 15px;
+    }
+    textarea { min-height: 85px; resize: vertical; }
+    .choice { margin: 12px 0; font-size: 14px; }
+    .choice label { display: flex; gap: 9px; align-items: flex-start; margin: 0; }
+    input[type="radio"], input[type="checkbox"] {
+      margin-top: 3px;
+    }
+    button {
+      width: 100%;
+      padding: 15px;
+      margin-top: 25px;
+      border: 0;
+      border-radius: 7px;
+      background: #8b7652;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:disabled { opacity: .5; }
+    #status { text-align: center; font-size: 14px; margin-top: 18px; }
+    .line-info { background: #f4f4f1; padding: 12px; border-radius: 6px; font-size: 13px; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <h1>kiho english mind</h1>
+  <p class="subtitle">大人向け英会話 体験レッスン申込フォーム</p>
+
+  <p class="line-info" id="lineStatus">LINE情報を取得しています...</p>
+
+  <form id="applicationForm">
+
+    <h2>申込者情報</h2>
+
+    <label>お名前（フルネーム） <span class="required">必須</span></label>
+    <input type="text" id="fullName" required placeholder="例：山田 花子">
+
+    <label>フリガナ <span class="required">必須</span></label>
+    <input type="text" id="furigana" required placeholder="例：ヤマダ ハナコ">
+
+    <label>電話番号 <span class="required">必須</span></label>
+    <input type="tel" id="phone" required placeholder="例：09012345678">
+
+    <label>メールアドレス <span class="required">必須</span></label>
+    <input type="email" id="email" required placeholder="例：example@email.com">
+
+    <h2>ヒアリング</h2>
+
+    <label>① 今のご自身の英語レベルに一番近いものを教えてください。 <span class="required">必須</span></label>
+
+    <div class="choice"><label><input type="radio" name="englishLevel" value="A：ほぼ初心者" required> A：ほぼ初心者</label></div>
+    <div class="choice"><label><input type="radio" name="englishLevel" value="B：簡単な英語なら理解・会話ができる"> B：簡単な英語なら理解・会話ができる</label></div>
+    <div class="choice"><label><input type="radio" name="englishLevel" value="C：日常会話はある程度できる"> C：日常会話はある程度できる</label></div>
+    <div class="choice"><label><input type="radio" name="englishLevel" value="D：仕事や海外でも英語を使える"> D：仕事や海外でも英語を使える</label></div>
+
+    <label>② 英語を話せるようになりたい理由・目的を教えてください。</label>
+    <textarea id="reason" placeholder="例：海外旅行で現地の人と会話したい"></textarea>
+
+    <label>③ どのような話題なら話しやすいですか？</label>
+    <textarea id="topics" placeholder="例：趣味、コーヒー、買い物、仕事など"></textarea>
+
+    <label>④ kihoへの質問や、事前に伝えておきたいことがあればご記入ください。</label>
+    <textarea id="questions" placeholder="自由にご記入ください"></textarea>
+
+    <label>⑤ 体験レッスンの希望曜日・時間を選択してください。 <span class="required">必須・複数選択可</span></label>
+
+    <div id="availabilityChoices">
+      <div class="choice"><label><input type="checkbox" value="月曜日 10:00〜14:00">月曜日 10:00〜14:00</label></div>
+      <div class="choice"><label><input type="checkbox" value="月曜日 19:00以降">月曜日 19:00以降</label></div>
+      <div class="choice"><label><input type="checkbox" value="水曜日 10:00〜14:00">水曜日 10:00〜14:00</label></div>
+      <div class="choice"><label><input type="checkbox" value="水曜日 19:00以降">水曜日 19:00以降</label></div>
+      <div class="choice"><label><input type="checkbox" value="木曜日 10:00〜14:00">木曜日 10:00〜14:00</label></div>
+      <div class="choice"><label><input type="checkbox" value="木曜日 19:00以降">木曜日 19:00以降</label></div>
+      <div class="choice"><label><input type="checkbox" value="金曜日 10:00〜14:00">金曜日 10:00〜14:00</label></div>
+      <div class="choice"><label><input type="checkbox" value="金曜日 19:00以降">金曜日 19:00以降</label></div>
+      <div class="choice"><label><input type="checkbox" value="土曜日 13:00以降">土曜日 13:00以降</label></div>
+      <div class="choice"><label><input type="checkbox" value="第2・第3日曜日 18:30以降">第2・第3日曜日 18:30以降</label></div>
+      <div class="choice"><label><input type="checkbox" id="otherCheck" value="その他">その他</label></div>
+    </div>
+
+    <textarea id="otherAvailability" placeholder="その他の希望日時をご記入ください"></textarea>
+
+    <button type="submit" id="submitButton">体験レッスンを申し込む</button>
+    <p id="status"></p>
+
+  </form>
+</div>
+
+<!-- 送信先との連携に使用 -->
+<iframe name="submitFrame" id="submitFrame" style="display:none;"></iframe>
+
+<script>
+  // ★ ご自身のLIFF IDに置き換えてください
+  const LIFF_ID = "2012686454-qhFVF4eo";
+
+  // Google Apps Scriptの送信先
+  const GAS_URL = "https://script.google.com/macros/s/AKfycbwaME1nyqUqcaG0vNTm8C-vcRlyCjETZPgmelx5dXlBFUclCsLKEv48YBWkJxvkdWPk/exec";
+
+  let lineName = "";
+  let lineUserId = "";
+
+  async function initializeLiff() {
+    try {
+      await liff.init({ liffId: LIFF_ID });
+
+      if (!liff.isLoggedIn()) {
+        liff.login();
+        return;
+      }
+
+      const profile = await liff.getProfile();
+      lineName = profile.displayName;
+      lineUserId = profile.userId;
+
+      document.getElementById("lineStatus").textContent =
+        "LINE連携済み：" + lineName;
+
+    } catch (error) {
+      console.error(error);
+      document.getElementById("lineStatus").textContent =
+        "LINE情報を取得できませんでした。LINEから開き直してください。";
+    }
+  }
+
+  initializeLiff();
+
+  document.getElementById("applicationForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const availability = Array.from(
+      document.querySelectorAll('#availabilityChoices input:checked')
+    ).map(el => el.value);
+
+    const other = document.getElementById("otherAvailability").value.trim();
+
+    if (!lineUserId) {
+      alert("LINE情報を取得できていません。LINEから開き直してください。");
+      return;
+    }
+
+    if (availability.length === 0) {
+      alert("希望日時を1つ以上選択してください。");
+      return;
+    }
+
+    if (availability.includes("その他") && !other) {
+      alert("その他の希望日時を入力してください。");
+      return;
+    }
+
+    const data = {
+      lineName: lineName,
+      lineUserId: lineUserId,
+      fullName: document.getElementById("fullName").value.trim(),
+      furigana: document.getElementById("furigana").value.trim(),
+      phone: document.getElementById("phone").value.trim(),
+      email: document.getElementById("email").value.trim(),
+      englishLevel: document.querySelector('input[name="englishLevel"]:checked').value,
+      reason: document.getElementById("reason").value.trim(),
+      topics: document.getElementById("topics").value.trim(),
+      questions: document.getElementById("questions").value.trim(),
+      availability: availability,
+      otherAvailability: other
+    };
+
+    const button = document.getElementById("submitButton");
+    button.disabled = true;
+
+    document.getElementById("status").textContent =
+      "送信処理を準備しています...";
+
+    // GAS側のdoPostと連携する送信処理は次の手順で設定します。
+    // ここではまだ送信しません。
+    console.log("申込データ確認用", data);
+
+    button.disabled = false;
+    document.getElementById("status").textContent =
+      "入力内容を確認できました。次の設定でメール送信を有効にします。";
+  });
+</script>
+
+</body>
+</html>
+
