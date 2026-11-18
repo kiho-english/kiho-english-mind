@@ -166,86 +166,76 @@
 
   initializeLiff();
 
-  document.getElementById("applicationForm").addEventListener("submit", function(e) {
-    e.preventDefault();
+  
+document.getElementById("applicationForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
 
-    const availability = Array.from(
-      document.querySelectorAll('#availabilityChoices input:checked')
-    ).map(el => el.value);
+  const availability = Array.from(
+    document.querySelectorAll('#availabilityChoices input:checked')
+  ).map(el => el.value);
 
-    const other = document.getElementById("otherAvailability").value.trim();
+  const other = document.getElementById("otherAvailability").value.trim();
 
-    if (!lineUserId) {
-      alert("LINE情報を取得できていません。LINEから開き直してください。");
-      return;
-    }
+  if (!lineUserId) {
+    alert("LINE情報を取得できていません。LINEから開き直してください。");
+    return;
+  }
 
-    if (availability.length === 0) {
-      alert("希望日時を1つ以上選択してください。");
-      return;
-    }
+  if (!availability.length) {
+    alert("希望日時を1つ以上選択してください。");
+    return;
+  }
 
-    if (availability.includes("その他") && !other) {
-      alert("その他の希望日時を入力してください。");
-      return;
-    }
+  if (availability.includes("その他") && !other) {
+    alert("その他の希望日時を入力してください。");
+    return;
+  }
 
-    const data = {
-      lineName: lineName,
-      lineUserId: lineUserId,
-      fullName: document.getElementById("fullName").value.trim(),
-      furigana: document.getElementById("furigana").value.trim(),
-      phone: document.getElementById("phone").value.trim(),
-      email: document.getElementById("email").value.trim(),
-      englishLevel: document.querySelector('input[name="englishLevel"]:checked').value,
-      reason: document.getElementById("reason").value.trim(),
-      topics: document.getElementById("topics").value.trim(),
-      questions: document.getElementById("questions").value.trim(),
-      availability: availability,
-      otherAvailability: other
-    };
+  const data = {
+    lineName,
+    lineUserId,
+    fullName: document.getElementById("fullName").value.trim(),
+    furigana: document.getElementById("furigana").value.trim(),
+    phone: document.getElementById("phone").value.trim(),
+    email: document.getElementById("email").value.trim(),
+    englishLevel: document.querySelector('input[name="englishLevel"]:checked').value,
+    reason: document.getElementById("reason").value.trim(),
+    topics: document.getElementById("topics").value.trim(),
+    questions: document.getElementById("questions").value.trim(),
+    availability,
+    otherAvailability: other
+  };
 
-    const button = document.getElementById("submitButton");
-    button.disabled = true;
+  const button = document.getElementById("submitButton");
+  const status = document.getElementById("status");
 
-    document.getElementById("status").textContent =
-      "送信処理を準備しています...";
+  button.disabled = true;
+  status.textContent = "送信しています...";
 
-    // GAS側のdoPostと連携する送信処理は次の手順で設定します。
+  try {
+    await fetch(
+      "https://script.google.com/macros/s/AKfycbwaME1nyqUqcaG0vNTm8C-vcRlyCjETZPgmelx5dXlBFUclCsLKEv48YBWkJxvkdWPk/exec",
+      {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "text/plain;charset=UTF-8"
+        },
+        body: JSON.stringify(data)
+      }
+    );
 
-    const button = document.getElementById("submitButton");
-    const status = document.getElementById("status");
+    status.textContent =
+      "送信リクエストを送信しました。メールの到着をご確認ください。";
 
-    button.disabled = true;
-    status.textContent = "送信しています...";
+  } catch (error) {
+    console.error(error);
+    status.textContent = "送信できませんでした。もう一度お試しください。";
+  } finally {
+    button.disabled = false;
+  }
+});
 
-    try {
-      await fetch(
-        "https://script.google.com/macros/s/AKfycbwaME1nyqUqcaG0vNTm8C-vcRlyCjETZPgmelx5dXlBFUclCsLKEv48YBWkJxvkdWPk/exec",
-        {
-          method: "POST",
-          mode: "no-cors",
-          headers: {
-            "Content-Type": "text/plain;charset=UTF-8"
-          },
-          body: JSON.stringify(data)
-        }
-      );
-
-      status.textContent =
-        "送信リクエストを受け付けました。メールの到着をご確認ください。";
-
-      document.getElementById("applicationForm").reset();
-
-    } catch (error) {
-      console.error(error);
-      status.textContent =
-        "送信できませんでした。通信環境を確認して、もう一度お試しください。";
-    } finally {
-      button.disabled = false;
-    }
-
-  });
 </script>
 
 </body>
