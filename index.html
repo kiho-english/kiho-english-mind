@@ -283,8 +283,32 @@ document.getElementById("applicationForm").addEventListener("submit", async func
 const form = document.getElementById("applicationForm");
 const complete = document.getElementById("completeScreen");
 
-form.style.setProperty("display", "none", "important");
-complete.style.setProperty("display", "block", "important");
+// 完了画面の要素が取得できているか確認
+alert(
+  "完了画面の確認：" +
+  (complete ? "取得できています" : "取得できていません")
+);
+
+// フォームを非表示
+form.style.display = "none";
+
+// 完了画面を表示
+complete.style.display = "block";
+complete.style.visibility = "visible";
+
+complete.innerHTML = `
+  <div style="text-align:center; padding:40px 20px;">
+    <div style="font-size:56px; color:#4CAF50;">✓</div>
+    <h2>お申し込みが完了しました！</h2>
+    <p>kiho english mindの体験レッスンに<br>
+    お申し込みいただき、ありがとうございます。</p>
+    <p>担当者より日程についてご連絡いたします。</p>
+    <p>受付確認メールをご確認ください。</p>
+    <strong>kiho english mind</strong>
+  </div>
+`;
+
+window.scrollTo(0, 0);
 
 window.scrollTo({
   top: 0,
