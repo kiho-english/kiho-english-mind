@@ -212,12 +212,39 @@
       "送信処理を準備しています...";
 
     // GAS側のdoPostと連携する送信処理は次の手順で設定します。
-    // ここではまだ送信しません。
-    console.log("申込データ確認用", data);
 
-    button.disabled = false;
-    document.getElementById("status").textContent =
-      "入力内容を確認できました。次の設定でメール送信を有効にします。";
+    const button = document.getElementById("submitButton");
+    const status = document.getElementById("status");
+
+    button.disabled = true;
+    status.textContent = "送信しています...";
+
+    try {
+      await fetch(
+        "https://script.google.com/macros/s/AKfycbwaME1nyqUqcaG0vNTm8C-vcRlyCjETZPgmelx5dXlBFUclCsLKEv48YBWkJxvkdWPk/exec",
+        {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "text/plain;charset=UTF-8"
+          },
+          body: JSON.stringify(data)
+        }
+      );
+
+      status.textContent =
+        "送信リクエストを受け付けました。メールの到着をご確認ください。";
+
+      document.getElementById("applicationForm").reset();
+
+    } catch (error) {
+      console.error(error);
+      status.textContent =
+        "送信できませんでした。通信環境を確認して、もう一度お試しください。";
+    } finally {
+      button.disabled = false;
+    }
+
   });
 </script>
 
